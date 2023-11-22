@@ -1,0 +1,4 @@
+<launch>
+    <param name="target_model_name" type="string" value="model1.2" />
+    <node name="robot_sub" pkg="robot_room" type="robot_sub" output="screen"/>
+</launch>

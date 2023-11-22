@@ -1,0 +1,40 @@
+<launch>
+
+
+    <node name="sub_pub0" pkg="robot_room" type="sub_pub" output="screen">
+        <param name="target_model_name" type="string" value="model2.7" />
+        <param name="new_x" type="double" value="0.0" />
+        <param name="speed" type="double" value="0.1" /> <!-- 设置速度参数 -->
+        <param name="time_interval" type="double" value="0.1" /> <!-- 设置时间间隔参数 -->
+
+    </node>
+
+    <node name="sub_pub1" pkg="robot_room" type="sub_pub" output="screen">
+        <param name="target_model_name" type="string" value="model2.8" />
+        <param name="new_x" type="double" value="0.0" />
+        <param name="new_y" type="double" value="0.0" />
+        <param name="speed" type="double" value="0.15" /> <!-- 设置速度参数 -->
+        <param name="time_interval" type="double" value="0.1" /> <!-- 设置时间间隔参数 -->
+
+    </node>
+
+    <node name="sub_pub2" pkg="robot_room" type="sub_pub" output="screen">
+        <param name="target_model_name" type="string" value="model2.4" />
+        <param name="new_x" type="double" value="0.0" />
+        <param name="new_y" type="double" value="0.0" />
+        <param name="speed" type="double" value="0.15" /> <!-- 设置速度参数 -->
+        <param name="time_interval" type="double" value="0.1" /> <!-- 设置时间间隔参数 -->
+
+    </node>
+
+    <node name="sub_pub3" pkg="robot_room" type="sub_pub" output="screen">
+        <param name="target_model_name" type="string" value="model2.6" />
+        <param name="new_x" type="double" value="0.0" />
+        <param name="new_y" type="double" value="0.0" />
+        <param name="speed" type="double" value="0.1" /> <!-- 设置速度参数 -->
+        <param name="time_interval" type="double" value="0.1" /> <!-- 设置时间间隔参数 -->
+
+    </node>
+
+
+</launch>  

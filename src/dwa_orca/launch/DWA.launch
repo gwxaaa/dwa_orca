@@ -1,0 +1,14 @@
+<launch>
+    <node name="DWA_main_1" pkg="robot_room" type="DWA_main_1" output="screen">
+        <param name="specific_model_name" type="str" value="model2.4" />
+        <param name="time" type="double" value="0.2" />
+        <param name="num" type="double" value="18.0" />
+        <param name="max_angular_speed" type="double" value="7.0" />
+        <param name="max_linear_speed" type="double" value="7.0" />
+        <param name="target_x" type="double" value="0.0" />
+        <param name="target_y" type="double" value="0.0" />
+        <!-- <param name="target_orientation_z" type="double" value="2" />
+        <param name="target_orientation_w" type="double" value="1" /> -->
+    </node>
+    
+</launch>
