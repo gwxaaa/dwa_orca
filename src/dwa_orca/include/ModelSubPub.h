@@ -48,8 +48,10 @@ namespace RVO
     Vector2 goalPosition;
     geometry_msgs::Pose new_pose;
     geometry_msgs::Twist new_twist;
-     geometry_msgs::Pose final_pose;
-     Vector2 lastvelocity;
+    geometry_msgs::Pose final_pose;
+    Vector2 lastvelocity;
+    Vector2 prevelocity;
+    std::vector<Vector2> newVelocities; // 用于存储新速度的数组
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H

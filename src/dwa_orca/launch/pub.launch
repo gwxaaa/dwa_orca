@@ -25,7 +25,7 @@
     <param name="goal_pose_x" type="double" value="10.0" />
     <param name="goal_pose_y" type="double" value="1.7" />
     <param name="goal_pose_z" type="double" value="0.5" />
-    <param name="time" type="double" value="0.1" />
+    <param name="time" type="double" value="1" />
 
   </node>
     <node name = "pub_sub13" pkg = "dwa_orca" type = "pub_sub" output = "screen">
@@ -39,7 +39,7 @@
     <param name="goal_pose_x" type="double" value="4.3" />
     <param name="goal_pose_y" type="double" value="9.5" />
     <param name="goal_pose_z" type="double" value="0.5" />
-    <param name="time" type="double" value="0.3" />
+    <param name="time" type="double" value="1" />
 
   </node>
     <node name = "pub_sub14" pkg = "dwa_orca" type = "pub_sub" output = "screen">
@@ -53,7 +53,7 @@
     <param name="goal_pose_x" type="double" value="9" />
     <param name="goal_pose_y" type="double" value="7.5" />
     <param name="goal_pose_z" type="double" value="0.5" />
-    <param name="time" type="double" value="0.2" />
+    <param name="time" type="double" value="1" />
 
   </node>
     <node name = "pub_sub15" pkg = "dwa_orca" type = "pub_sub" output = "screen">
@@ -67,7 +67,7 @@
     <param name="goal_pose_x" type="double" value="-0.0" />
     <param name="goal_pose_y" type="double" value="10.0" />
     <param name="goal_pose_z" type="double" value="0.5" />
-    <param name="time" type="double" value="0.2" />
+    <param name="time" type="double" value="1" />
 
   </node>
     <node name = "pub_sub16" pkg = "dwa_orca" type = "pub_sub" output = "screen">
@@ -81,7 +81,7 @@
     <param name="goal_pose_x" type="double" value="-6.8" />
     <param name="goal_pose_y" type="double" value="9.0" />
     <param name="goal_pose_z" type="double" value="0.5" />
-    <param name="time" type="double" value="0.2" />
+    <param name="time" type="double" value="1" />
 
   </node>
     <node name = "pub_sub17" pkg = "dwa_orca" type = "pub_sub" output = "screen">
