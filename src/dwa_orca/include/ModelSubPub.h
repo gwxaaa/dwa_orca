@@ -7,6 +7,7 @@
 #include "Agent.h"
 #include "Obstacle.h"
 #include "Neighbor.h"
+#include <KinematicModel.h>
 namespace RVO
 {
 
@@ -18,6 +19,7 @@ namespace RVO
     // 回调函数，处理模型状态信息
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
+
   private:
     ros::NodeHandle nh;
     ros::Subscriber model_states_sub_;
@@ -45,7 +47,9 @@ namespace RVO
     Vector2 agentVelocity;
     Vector2 goalPosition;
     geometry_msgs::Pose new_pose;
-
+    geometry_msgs::Twist new_twist;
+     geometry_msgs::Pose final_pose;
+     Vector2 lastvelocity;
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H

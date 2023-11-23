@@ -1,5 +1,5 @@
 <launch>
-    <node name="DWA_main_1" pkg="robot_room" type="DWA_main_1" output="screen">
+    <node name="DWA_main_11" pkg="dwa_orca" type="DWA_main_1" output="screen">
         <param name="specific_model_name" type="str" value="model2.4" />
         <param name="time" type="double" value="0.2" />
         <param name="num" type="double" value="18.0" />

@@ -55,9 +55,10 @@ include
  add_executable(DWA_main_1  src/DWA_main_1.cpp  src/DWA.cpp src/KinematicModel.cpp )
  target_link_libraries( DWA_main_1 ${catkin_LIBRARIES})
 install(TARGETS DWA_main_1  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION} )
-add_executable(pub_sub src/pub_sub.cpp src/ModelSubPub.cpp src/Agent.cpp  src/Vector2.cc   src/Line.cc src/Obstacle.cc src/Neighbor.cc)
+
+add_executable(pub_sub src/pub_sub.cpp src/ModelSubPub.cpp src/Agent.cpp  src/Vector2.cc   src/Line.cc src/Obstacle.cc src/Neighbor.cc src/KinematicModel.cpp)
 ## Specify libraries to link a library or executable target against
- target_link_libraries(pub_sub  ${catkin_LIBRARIES} )
+target_link_libraries(pub_sub  ${catkin_LIBRARIES} )
 
 # add_executable(DWA_main  src/DWA_main.cpp  src/DWA.cpp src/KinematicModel.cpp )
 #add_executable(main_1  src/main_1.cpp  src/KinematicModel.cpp)

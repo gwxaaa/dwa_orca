@@ -7,6 +7,7 @@
 #include "Agent.h"
 #include "Neighbor.h"
 #include <cmath>
+#include <KinematicModel.h>
 namespace RVO
 {
   ModelSubPub::ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state,
@@ -57,33 +58,60 @@ namespace RVO
     // 格式转化
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
+  //这个是这一次的转换角度
     // 根据新的朝向角度和线速度计算速度向量
     double velocityX = agenttwist.linear.x * cos(deltaTheta);
     double velocityY = agenttwist.linear.x * sin(deltaTheta);
     Vector2 agentVelocity(velocityX, velocityY);
-    Vector2 goalPosition(goal_pose.position.x,goal_pose.position.y);
+    Vector2 goalPosition(goal_pose.position.x, goal_pose.position.y);
+    //计算上一次的角度与坐标轴的大小
+    double initialtheta = atan2(velocityY, velocityX);
+    std::cout << "32222222222222Moved to new position: x=" << initialtheta << std::endl;
     RVO::Neighbor neighborobject(*this);
     // // 获取计算后的邻居信息
     std::vector<RVO::Agent *> agentNeighbors_ = neighborobject.getAgentNeighbors();
     std::vector<RVO::Obstacle *> obstacleNeighbors_ = neighborobject.getObstacleNeighbors();
     RVO::Agent agent(agentPosition, agentVelocity, goalPosition, time, maxSpeed_, neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, goalPosition, agentNeighbors_, obstacleNeighbors_, time);
-
+    geometry_msgs::Pose final_pose;
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
-      new_pose.position.x= agentPosition.x();
-      new_pose.position.y = agentPosition.y();
+      final_pose.position.x = agentPosition.x();
+      final_pose.position.y = agentPosition.y();
       std::cout << "New velocity contains NaN. Keeping original position." << std::endl;
     }
     else
     {
-      new_pose.position.x = agentPosition.x()+newVelocity.x() * time;
-      new_pose.position.y = agentPosition.y()+newVelocity.y() * time;
-      std::cout << "Moved to new position: x=" <<  new_pose.position.x  << ", y=" <<  new_pose.position.y << std::endl;
+      // 先将相关的速度格式转换
+      double X = newVelocity.x();
+      double Y = newVelocity.y();
+      new_twist.linear.x = sqrt(X * X + Y * Y);
+      //计算得到新的角度---新的速度下的角度
+      double theta = atan2(Y, X);
+      std::cout << "42222222222222Moved to new : x=" << theta << std::endl;
+      // 一开始传进来的角度，和现在的角度作插值，
+      // 前面的角度是在周期内，模型的转动角度，并不是那个时刻与初开始的，所以需要重新计算
+        // new_twist.angular.z = theta/ time;
+      new_twist.angular.z = (theta - initialtheta) / time;
+      new_twist.angular.x=0;
+      new_twist.angular.y=0;
+      std::cout << "2222222222222Moved to new position: x=" << new_twist.linear.x << std::endl;
+      std::cout << "11111111111Moved to new position: x=" << new_twist.angular.z << std::endl;
+      // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
+      KinematicModel kinematic_model(agentpose, new_twist);
+      final_pose = kinematic_model.calculateNewPosition(time);
+      ROS_INFO_STREAM("Position - x: " << final_pose.position.x << ", y: " << final_pose.position.y << ", z: " << final_pose.position.z);
+      // 得到新的速度
+      //  new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
+      //  new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
+      std::cout << "Moved to new position: x=" << final_pose.position.x << ", y=" << final_pose.position.y << std::endl;
     }
+    ROS_INFO_STREAM("Final Pose Information:");
+    ROS_INFO_STREAM("Position - x: " << final_pose.position.x << ", y: " << final_pose.position.y << ", z: " << final_pose.position.z);
+    ROS_INFO_STREAM("Orientation - x: " << final_pose.orientation.x << ", y: " << final_pose.orientation.y << ", z: " << final_pose.orientation.z << ", w: " << final_pose.orientation.w);
     gazebo_msgs::ModelState model_state;
     model_state.model_name = agentname;
-    model_state.pose = new_pose;
+    model_state.pose = final_pose;
     model_states_pub_.publish(model_state);
   }
   std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const

@@ -4,6 +4,7 @@
 #include "std_msgs/String.h"
 #include "ModelSubPub.h"
 #include "Neighbor.h"
+#include <KinematicModel.h>
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pub_sub");
@@ -33,7 +34,7 @@ int main(int argc, char **argv)
     target_model_state.twist.angular.z = twist_angular_z;
     RVO::ModelSubPub modelSubPub(targetModelName, time, target_model_state, goal_pose,
                                  maxSpeed_, neighborDistance_, timeHorizon_, radius_);
-    ros::Rate rate(100);
+    ros::Rate rate(1);
     while (ros::ok())
     {
         ROS_INFO("Target model name: %s", targetModelName.c_str());

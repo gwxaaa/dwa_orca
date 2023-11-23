@@ -45,7 +45,10 @@ namespace RVO {
     std::vector<Obstacle*> Neighbor::getObstacleNeighbors() const {
         return obstacleNeighbors_;
     }
+
+    
     bool Neighbor::isAgent(const gazebo_msgs::ModelState& model_state) {
+
         return true;
     }
     bool Neighbor::isObstacle(const gazebo_msgs::ModelState& model_state) {

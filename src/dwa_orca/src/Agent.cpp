@@ -220,7 +220,6 @@ namespace RVO
     Vector2 prefVelocity_(velocityX1, velocityY1);
     orcaLines_.clear();
     const float invTimeHorizonObst = 1.0 / timeHorizonObst_;
-
     /* Create obstacle ORCA lines. */
     for (std::size_t i = 0U; i < obstacleNeighbors_.size(); ++i)
     {
@@ -488,6 +487,7 @@ namespace RVO
     const std::size_t numObstLines = orcaLines_.size();
     const float invTimeHorizon = 1.0F / timeHorizon_;
     /* Create agent ORCA lines. */
+   std::cout << "2222222222211111111111Moved to new position: x=" << maxSpeed_ << std::endl;
     for (std::size_t i = 0U; i < agentNeighbors_.size(); ++i)
     {
       const RVO::Agent *const other = agentNeighbors_[i];
@@ -504,7 +504,6 @@ namespace RVO
         const Vector2 w = relativeVelocity - invTimeHorizon * relativePosition;
         /* Vector from cutoff center to relative velocity. */
         const float wLengthSq = absSq(w);
-        std::cout << "1111111wLength: " << wLengthSq << std::endl;
         const float dotProduct = w * relativePosition;
         if (dotProduct < 0.0F &&
             dotProduct * dotProduct > combinedRadiusSq * wLengthSq)
@@ -564,7 +563,6 @@ namespace RVO
     }
     return newVelocity_;
   }
-
   void Agent::update(float timeStep)
   {
     velocity_ = newVelocity_;

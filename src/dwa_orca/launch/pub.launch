@@ -1,0 +1,143 @@
+<launch>
+
+   <node name = "pub_sub11" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.1" />
+    <param name="target_model/twist_linear_x" type="double" value="1.3" />
+    <param name="target_model/twist_angular_z" type="double" value="1.0" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="2.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="9.6" />
+    <param name="goal_pose_y" type="double" value="-4.8" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="1" />
+
+  </node>
+  <!-- <node name = "pub_sub12" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.2" />
+    <param name="target_model/twist_linear_x" type="double" value="0.3" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="10.0" />
+    <param name="goal_pose_y" type="double" value="1.7" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.1" />
+
+  </node>
+    <node name = "pub_sub13" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.3" />
+    <param name="target_model/twist_linear_x" type="double" value="0.3" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="4.3" />
+    <param name="goal_pose_y" type="double" value="9.5" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.3" />
+
+  </node>
+    <node name = "pub_sub14" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.4" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="9" />
+    <param name="goal_pose_y" type="double" value="7.5" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub15" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.5" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="-0.0" />
+    <param name="goal_pose_y" type="double" value="10.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub16" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.6" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="-6.8" />
+    <param name="goal_pose_y" type="double" value="9.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub17" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.7" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="-9.30" />
+    <param name="goal_pose_y" type="double" value="2.6" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub18" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.8" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="-8.7" />
+    <param name="goal_pose_y" type="double" value="-5.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub19" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.9" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="-3.3" />
+    <param name="goal_pose_y" type="double" value="-10.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node>
+    <node name = "pub_sub20" pkg = "dwa_orca" type = "pub_sub" output = "screen">
+    <param name="target_model_name" type="string" value="model2.10" />
+    <param name="target_model/twist_linear_x" type="double" value="0.5" />
+    <param name="target_model/twist_angular_z" type="double" value="0.5" />
+    <param name="max_speed" type="double" value="3.0" />
+    <param name="neighbor_distance" type="double" value="4.0" />
+    <param name="time_horizon" type="double" value="2.0" />
+    <param name="radius_" type="double" value="1.2" />
+    <param name="goal_pose_x" type="double" value="3.5" />
+    <param name="goal_pose_y" type="double" value="-9.0" />
+    <param name="goal_pose_z" type="double" value="0.5" />
+    <param name="time" type="double" value="0.2" />
+
+  </node> -->
+</launch>
