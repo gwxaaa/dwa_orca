@@ -15,7 +15,7 @@ namespace RVO
   {
   public:
     ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state, geometry_msgs::Pose goal_pose,
-                double maxSpeed_, double neighborDistance_, double timeHorizon_, double radius);
+                double maxSpeed_, double neighborDistance_, double timeHorizon_, double radius_,double num);
     // 回调函数，处理模型状态信息
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
@@ -26,6 +26,7 @@ namespace RVO
     ros::Publisher model_states_pub_;
     std::string target_model_; // 用于存储目标模型的名称
     double time;
+    double num;
     geometry_msgs::Pose target_model_pose;
     double new_velocity;
     geometry_msgs::Pose agentpose;

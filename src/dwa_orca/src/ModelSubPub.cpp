@@ -1,4 +1,3 @@
-
 #include "ros/ros.h"
 #include "gazebo_msgs/ModelStates.h"
 #include "gazebo_msgs/ModelState.h"
@@ -8,10 +7,11 @@
 #include "Neighbor.h"
 #include <cmath>
 #include <KinematicModel.h>
+#include "DWA.h"
 namespace RVO
 {
   ModelSubPub::ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state,
-                           geometry_msgs::Pose goal_pose, double maxSpeed_, double neighborDistance_, double timeHorizon_, double radius_)
+                           geometry_msgs::Pose goal_pose, double maxSpeed_, double neighborDistance_, double timeHorizon_, double radius_,double num)
       : modelName_(modelName),
         time(time),
         maxSpeed_(maxSpeed_),
@@ -20,7 +20,8 @@ namespace RVO
         radius_(radius_),
         goal_pose(goal_pose),
         target_model_state(target_model_state),
-        lastvelocity(agentVelocity)
+        lastvelocity(agentVelocity),
+        num(num)
   {
     // 初始化ROS节点
     ros::NodeHandle nh;
@@ -60,18 +61,33 @@ namespace RVO
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
     // 这个是这一次的转换角度
-    //  根据新的朝向角度和线速度计算速度向量
     double velocityX = agenttwist.linear.x * cos(deltaTheta);
     double velocityY = agenttwist.linear.x * sin(deltaTheta);
     Vector2 agentVelocity(velocityX, velocityY);
     Vector2 goalPosition(goal_pose.position.x, goal_pose.position.y);
+
+//插入DWA的计算。将dwa的结果输出，生成最佳路径，然后继续计算ORCA
+
+//other_model_pose-----obstacle_pose     max_linear_speed, max_angular_speed,---重新设置。
+    // 创建DWAPlanner对象
+ RVO::DWAPlanner planner(goal_pose, obstacle_poses, max_linear_speed, max_angular_speed, time, num, agentpose);
+    // 查找最佳速度，final_pose，最佳分数
+    const geometry_msgs::Twist &best_twist = planner.FindBestTwist(agentpose);
+
+
+
+
+
+
+
+
+    //上面就是将
     // 如果借助agent,那么就会订阅一次信息就修改一次，然后就会修改角速度大小，所以应该是借助第一次的计算值进行相关的运行，在实现新速度之前，角速度线速度就是这个值
     //  计算上一次的角度与坐标轴的大小
     double initialtheta = atan2(velocityY, velocityX);
     std::cout << "32222222222222Moved to new position: x=" << initialtheta << std::endl;
     double initialtheta1 = atan2(lastvelocity.y(), lastvelocity.x());
     std::cout << "1232222222222222Moved to new position: x=" << initialtheta << std::endl;
-
     RVO::Neighbor neighborobject(*this);
     // // 获取计算后的邻居信息
     std::vector<RVO::Agent *> agentNeighbors_ = neighborobject.getAgentNeighbors();
@@ -105,18 +121,13 @@ namespace RVO
       double X = newVelocity.x();
       double Y = newVelocity.y();
       new_twist.linear.x = sqrt(X * X + Y * Y);
-      // 计算得到新的角度---新的速度下的角度
       double theta = atan2(Y, X);
-      std::cout << "42222222222222Moved to new : x=" << theta << std::endl;
-
-      // 一开始传进来的角度，和现在的角度作插值，
-      // 前面的角度是在周期内，模型的转动角度，并不是那个时刻与初开始的，所以需要重新计算
+        // 前面的角度是在周期内，模型的转动角度，并不是那个时刻与初开始的，所以需要重新计算
       // new_twist.angular.z = theta/ time;
       new_twist.angular.z = (theta - initialtheta1) / time;
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
-      std::cout << "2222222222222Moved to new : x=" << new_twist.linear.x << std::endl;
-      std::cout << "11111111111Moved to new: x=" << new_twist.angular.z << std::endl;
+
       // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);

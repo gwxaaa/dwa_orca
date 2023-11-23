@@ -6,6 +6,8 @@
 #include <geometry_msgs/Pose.h>
 #include <gazebo_msgs/ModelState.h>
 #include <KinematicModel.h>
+namespace RVO
+{
 DWAPlanner::DWAPlanner(const geometry_msgs::Pose& target_pose, const std::vector<geometry_msgs::Pose>& obstacles,
                        double max_linear_speed, double max_angular_speed, double time, double num,
                        const geometry_msgs::Pose& current_pose)
@@ -241,4 +243,5 @@ double DWAPlanner::CalculateScore(const geometry_msgs::Twist& twist)
   
 
   return score;
+}
 }
