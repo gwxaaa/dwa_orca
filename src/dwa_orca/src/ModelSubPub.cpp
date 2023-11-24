@@ -21,10 +21,11 @@ namespace RVO
         radius_(radius_),
         goal_pose(goal_pose),
         target_model_state(target_model_state),
-        lastvelocity(agentVelocity),
+        lastStoredNewVelocity(agentVelocity),
         num(num),
         max_linear_speed(max_linear_speed),
-        max_angular_speed(max_angular_speed)
+        max_angular_speed(max_angular_speed),
+        newVelocities(1, Vector2(0, 0))
 
   {
     // 初始化ROS节点
@@ -69,16 +70,6 @@ namespace RVO
     double velocityY = agenttwist.linear.x * sin(deltaTheta);
     Vector2 agentVelocity(velocityX, velocityY);
     Vector2 goalPosition(goal_pose.position.x, goal_pose.position.y);
-    // double distanceToGoal = sqrt(pow(agentPosition.x() - goal_pose.position.x, 2) +
-    //                              pow(agentPosition.y() - goal_pose.position.y, 2));
-    // if (distanceToGoal < 0.01) {
-    //     // 如果距离小于某个阈值，认为已经到达目标点，停止计算
-    //     return;
-    // }
-    // 插入DWA的计算。将dwa的结果输出，生成最佳路径，然后继续计算ORCA
-
-    // other_model_pose-----obstacle_pose     max_linear_speed, max_angular_speed,---重新设置。
-    //  创建DWAPlanner对象
 
     obstacle_poses.clear(); // 清空 obstacle_poses，确保它是空的
     // 将 other_models_states 中的数据转移到 obstacle_poses 中
@@ -98,11 +89,6 @@ namespace RVO
     double velocityY1 = best_twist.linear.x * sin(goalTheta);
     Vector2 prefVelocity(velocityX1, velocityY1);
 
-    double initialtheta = atan2(velocityY, velocityX);
-    std::cout << "32222222222222Moved to new position: x=" << initialtheta << std::endl;
-    double initialtheta1 = atan2(lastvelocity.y(), lastvelocity.x());
-    std::cout << "1232222222222222Moved to new position: x=" << initialtheta << std::endl;
-
     RVO::Neighbor neighborobject(*this);
     // // 获取计算后的邻居信息
     std::vector<RVO::Agent *> agentNeighbors_ = neighborobject.getAgentNeighbors();
@@ -110,18 +96,6 @@ namespace RVO
     RVO::Agent agent(agentPosition, agentVelocity, prefVelocity, time, maxSpeed_, neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, prefVelocity, agentNeighbors_, obstacleNeighbors_, time);
     geometry_msgs::Pose final_pose;
-    if (agentVelocity != lastvelocity)
-    {
-      lastvelocity = lastvelocity;
-    }                                      // 假设 agentVelocity 是上一次计算得到的速度矢量
-    else if (agentVelocity == newVelocity) // 实现了期望的速度，那么就会计算新的速度，
-    {
-      lastvelocity = agentVelocity;
-    }
-    else if (agentVelocity == lastvelocity) // 初始值时
-    {
-      lastvelocity = agentVelocity;
-    }
 
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
@@ -131,17 +105,29 @@ namespace RVO
     }
     else
     {
+
+      if (newVelocity != lastStoredNewVelocity)
+      {
+        newVelocities.push_back(newVelocity); // 将上一次存储的速度放入容器
+        lastStoredNewVelocity = newVelocity;
+        // 速度改变，将旧的值给last
+        lastvelocity = newVelocities[newVelocities.size() - 2];
+        // 更新存储的新速度为当前计算得到的新速度
+      }
+      double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
+      std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
       // 先将相关的速度格式转换
       double X = newVelocity.x();
       double Y = newVelocity.y();
       new_twist.linear.x = sqrt(X * X + Y * Y);
       double theta = atan2(Y, X);
-      // 前面的角度是在周期内，模型的转动角度，并不是那个时刻与初开始的，所以需要重新计算
-      new_twist.angular.z = (theta - initialtheta) / time;
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
-
-     // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
+      std::cout << "232222222222222Moved to theta: x=" << theta << std::endl;
+      std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
+      new_twist.angular.z = (theta - 0) / time;
+      std::cout << "232222222222222Moved tonew_twist.angular.z: x=" << new_twist.angular.z << std::endl;
+      // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);
       // 得到新的速度

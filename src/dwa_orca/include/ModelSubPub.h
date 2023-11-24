@@ -52,10 +52,11 @@ namespace RVO
     geometry_msgs::Pose final_pose;
     Vector2 lastvelocity;
     Vector2 prevelocity;
+    Vector2 lastStoredNewVelocity;
     std::vector<Vector2> newVelocities;
     double max_linear_speed;
     double max_angular_speed; // 用于存储新速度的数组
-        std::vector<geometry_msgs::Pose> obstacle_poses;
+    std::vector<geometry_msgs::Pose> obstacle_poses;
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H
