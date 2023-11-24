@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     // 检查是否到达目标点
     double distance_to_target = sqrt(pow(target_pose.position.x - current_pose.position.x, 2) +
                                      pow(target_pose.position.y - current_pose.position.y, 2));
-    if (distance_to_target < 1)
+    if (distance_to_target < 0.1)
     {
       ROS_INFO("Reached the goal");
     }

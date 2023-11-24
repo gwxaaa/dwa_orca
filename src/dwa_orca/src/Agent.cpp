@@ -186,7 +186,7 @@ namespace RVO
       }
     }
   } /* namespace */
-  Agent::Agent(const Vector2 &agentPosition, const Vector2 &agentVelocity, const Vector2 &goalPosition, double time,
+  Agent::Agent(const Vector2 &agentPosition, const Vector2 &agentVelocity, const Vector2 &prefVelocity, double time,
                double maxSpeed_, double neighborDistance_, double timeHorizon_, const std::vector<gazebo_msgs::ModelState> other_models_states,
                double radius_)
       : time(time),
@@ -195,6 +195,7 @@ namespace RVO
         radius_(radius_),
         timeHorizon_(timeHorizon_),
         timeHorizonObst_(timeHorizonObst_)
+    
   {
   }
   Agent::~Agent() {}
@@ -208,16 +209,18 @@ namespace RVO
   }
   // void Agent::computeNewVelocity(float timeStep)
   Vector2 Agent::computeNewVelocity(const Vector2 &agentPosition, const Vector2 &agentVelocity,
-                                    const Vector2 &goalPosition,
+                                    const Vector2 &prefVelocity,
                                     const std::vector<RVO::Agent *> &agentNeighbors_,
                                     const std::vector<RVO::Obstacle *> &obstacleNeighbors_,
                                     double time)
   {
     Vector2 position_(agentPosition);
     Vector2 velocity_(agentVelocity);
-    double velocityX1 = (goalPosition.x() - agentPosition.x()) * 0.1;
-    double velocityY1 = (goalPosition.y() - agentPosition.y()) * 0.1;
-    Vector2 prefVelocity_(velocityX1, velocityY1);
+
+    // double velocityX1 = (goalPosition.x() - agentPosition.x()) * 0.1;
+    // double velocityY1 = (goalPosition.y() - agentPosition.y()) * 0.1;
+    // Vector2 prefVelocity_(velocityX1, velocityY1);
+   Vector2 prefVelocity_(prefVelocity) ;
     orcaLines_.clear();
     const float invTimeHorizonObst = 1.0 / timeHorizonObst_;
     /* Create obstacle ORCA lines. */
@@ -487,7 +490,6 @@ namespace RVO
     const std::size_t numObstLines = orcaLines_.size();
     const float invTimeHorizon = 1.0F / timeHorizon_;
     /* Create agent ORCA lines. */
-   std::cout << "2222222222211111111111Moved to new position: x=" << maxSpeed_ << std::endl;
     for (std::size_t i = 0U; i < agentNeighbors_.size(); ++i)
     {
       const RVO::Agent *const other = agentNeighbors_[i];

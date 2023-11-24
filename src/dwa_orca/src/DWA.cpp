@@ -126,8 +126,8 @@ geometry_msgs::Pose DWAPlanner::PredictPose(const geometry_msgs::Pose& current_p
 double DWAPlanner::CalculateCollision(const geometry_msgs::Pose& final_pose)
 {
   double min_collision_distance = 0.4;      // 最小碰撞距离
-  double avoidance_distance = 1.7;         // 避障范围起始距离
-  double collision_distance_threshold = 1.7; // 碰撞阈值
+  double avoidance_distance = 1.5;         // 避障范围起始距离
+  double collision_distance_threshold = 1.5; // 碰撞阈值
 
   double distance_to_obstacle = std::numeric_limits<double>::max();
 
@@ -171,7 +171,7 @@ double DWAPlanner::CalculateCollision(const geometry_msgs::Pose& final_pose)
 double DWAPlanner::FindMaxDistance(const std::vector<geometry_msgs::Twist>& twist_vector,
                                    const geometry_msgs::Pose& current_pose)
 {
-  double max_distance = 1.0;
+  double max_distance = 1;
   // 遍历每组速度角速度，计算对应的距离
   for (const auto& twist : twist_vector)
   {
@@ -224,8 +224,6 @@ double DWAPlanner::CalculateScore(const geometry_msgs::Twist& twist)
   // {
   //   distance=-distance;
   // }
-
-
   // 设置权重
   double distance_weight = -0.1;
   double collision_weight = 100000;

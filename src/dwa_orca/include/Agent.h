@@ -28,13 +28,13 @@ namespace RVO
      */
     Agent() {}
     Agent(const Vector2 &position, const Vector2 &velocity) : position_(position), velocity_(velocity) {}
-    Agent(const Vector2& agentPosition, const Vector2& agentVelocity,const Vector2& goalPosition,double time,
+    Agent(const Vector2& agentPosition, const Vector2& agentVelocity,const Vector2& prefVelocity,double time,
           double maxSpeed_, double neighborDistance_, double timeHorizon_, const  std::vector<gazebo_msgs::ModelState> other_models_states,
           double radius_);
     ~Agent();
     void computeNeighbors(const Neighbor *neighbor);
     Vector2 computeNewVelocity(const Vector2& agentPosition, const Vector2& agentVelocity,
-                                  const Vector2& goalPosition,
+                                  const Vector2& prefVelocity,
                                   const std::vector<RVO::Agent*>& agentNeighbors_,
                                   const std::vector<RVO::Obstacle*>& obstacleNeighbors_,
                                   double time);
@@ -46,6 +46,7 @@ namespace RVO
     Vector2 newVelocity_;
     Vector2 position_;
     Vector2 prefVelocity_;
+    Vector2 prefVelocity;
     Vector2 velocity_;
     std::size_t id_;
     std::size_t maxNeighbors_;
