@@ -30,6 +30,7 @@ namespace RVO
         std::vector<gazebo_msgs::ModelState> other_models_states;
         bool isAgent(const gazebo_msgs::ModelState &model_state);
         bool isObstacle(const gazebo_msgs::ModelState &model_state);
+        double radius_;
     };
 
 } // namespace RVO

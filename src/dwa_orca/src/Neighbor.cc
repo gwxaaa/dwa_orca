@@ -8,6 +8,7 @@
 
 namespace RVO {
     Neighbor::Neighbor(const ModelSubPub & modelSubPub) : modelSubPub_(modelSubPub) {
+        double radius_=modelSubPub.radius_;
         std::vector<gazebo_msgs::ModelState> other_models_states = modelSubPub_.getothermodels();
         if (!other_models_states.empty()) {
             ROS_INFO("Number of other models: %zu", other_models_states.size());
@@ -20,7 +21,7 @@ namespace RVO {
                     double velocityX = twist.linear.x * cos(deltaTheta);
                     double velocityY = twist.linear.x * sin(deltaTheta);
                     Vector2 velocity_(velocityX, velocityY);
-                    Agent* newAgent = new Agent(point, velocity_);
+                    Agent* newAgent = new Agent(point, velocity_,radius_);
                     agentNeighbors_.push_back(newAgent);
                     //智能体是可以的
                 } else if (isObstacle(model_state)) {

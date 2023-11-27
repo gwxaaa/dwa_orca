@@ -109,14 +109,14 @@ namespace RVO
       if (newVelocity != lastStoredNewVelocity)
       {
         newVelocities.push_back(newVelocity); // 将上一次存储的速度放入容器
-        lastStoredNewVelocity = newVelocity;
+        lastStoredNewVelocity = newVelocity;//初始信息设置为0，也就是初始的位置不论朝向怎么样，都根据相关的速度计算得到角速度。
         // 速度改变，将旧的值给last
         lastvelocity = newVelocities[newVelocities.size() - 2];
         // 更新存储的新速度为当前计算得到的新速度
       }
       double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
       std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
-      // 先将相关的速度格式转换
+      // 先将相关的速度格式转换    std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
       double X = newVelocity.x();
       double Y = newVelocity.y();
       new_twist.linear.x = sqrt(X * X + Y * Y);
@@ -124,15 +124,15 @@ namespace RVO
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
       std::cout << "232222222222222Moved to theta: x=" << theta << std::endl;
-      std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
-      new_twist.angular.z = (theta - 0) / time;
+      new_twist.angular.z = (theta -  0) / time;
+      std::cout << "132222222222222Moved to new_twist.linear.x=" << new_twist.linear.x<< std::endl;
       std::cout << "232222222222222Moved tonew_twist.angular.z: x=" << new_twist.angular.z << std::endl;
       // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);
       // 得到新的速度
-      // new_pose.position.x = agentPosition.x() + newVelocity.x() * time;
-      // new_pose.position.y = agentPosition.y() + newVelocity.y() * time;
+      //  final_pose.position.x = agentPosition.x() + newVelocity.x() * time;
+      //  final_pose.position.y = agentPosition.y() + newVelocity.y() * time;
       std::cout << "Moved to new position: x=" << final_pose.position.x << ", y=" << final_pose.position.y << std::endl;
     }
 

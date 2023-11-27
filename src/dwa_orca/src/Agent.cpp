@@ -199,6 +199,7 @@ namespace RVO
   {
   }
   Agent::~Agent() {}
+  
   void Agent::computeNeighbors(const Neighbor *neighbor)
   {
     obstacleNeighbors_.clear();
@@ -497,6 +498,10 @@ namespace RVO
       const Vector2 relativeVelocity = velocity_ - other->velocity_;
       const float distSq = absSq(relativePosition);
       const float combinedRadius = radius_ + other->radius_;
+    //   //半径问题
+    // ROS_INFO("Agent Neighbor %zu:", i);
+    // ROS_INFO("Radius: %.2f", other->radius_);
+    // ROS_INFO("Combined Radius: %.2f", combinedRadius);
       const float combinedRadiusSq = combinedRadius * combinedRadius;
       Line line;
       Vector2 u;

@@ -19,7 +19,7 @@ namespace RVO
     // 回调函数，处理模型状态信息
     void modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg);
     std::vector<gazebo_msgs::ModelState> getothermodels() const;
-
+    double radius_; // 避障半径
   private:
     ros::NodeHandle nh;
     ros::Subscriber model_states_sub_;
@@ -40,7 +40,7 @@ namespace RVO
     double maxSpeed_;
     double neighborDistance_;
     double timeHorizon_;
-    double radius_; // 避障半径
+
     std::vector<Agent *> agentNeighbors_;
     std::vector<Agent *> obstacleNeighbors_;
     gazebo_msgs::ModelState target_model_state;

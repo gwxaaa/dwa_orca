@@ -27,7 +27,7 @@ namespace RVO
      * @brief Constructs an agent instance.
      */
     Agent() {}
-    Agent(const Vector2 &position, const Vector2 &velocity) : position_(position), velocity_(velocity) {}
+    Agent(const Vector2 &position, const Vector2 &velocity,double radius_) : position_(position), velocity_(velocity) ,radius_(radius_){}
     Agent(const Vector2& agentPosition, const Vector2& agentVelocity,const Vector2& prefVelocity,double time,
           double maxSpeed_, double neighborDistance_, double timeHorizon_, const  std::vector<gazebo_msgs::ModelState> other_models_states,
           double radius_);
