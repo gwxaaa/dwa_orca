@@ -62,6 +62,7 @@ namespace RVO
     std::string agentname = target_model_;
     agentpose = target_model_state.pose;
     agenttwist = target_model_state.twist;
+     std::cout << "912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
     // 格式转化
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
@@ -88,7 +89,6 @@ namespace RVO
     double velocityX1 = best_twist.linear.x * cos(goalTheta);
     double velocityY1 = best_twist.linear.x * sin(goalTheta);
     Vector2 prefVelocity(velocityX1, velocityY1);
-
     RVO::Neighbor neighborobject(*this);
     // // 获取计算后的邻居信息
     std::vector<RVO::Agent *> agentNeighbors_ = neighborobject.getAgentNeighbors();
@@ -115,7 +115,7 @@ namespace RVO
         // 更新存储的新速度为当前计算得到的新速度
       }
       double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
-      std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
+     // std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
       // 先将相关的速度格式转换    std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
       double X = newVelocity.x();
       double Y = newVelocity.y();
@@ -123,10 +123,7 @@ namespace RVO
       double theta = atan2(Y, X);
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
-      std::cout << "232222222222222Moved to theta: x=" << theta << std::endl;
       new_twist.angular.z = (theta -  0) / time;
-      std::cout << "132222222222222Moved to new_twist.linear.x=" << new_twist.linear.x<< std::endl;
-      std::cout << "232222222222222Moved tonew_twist.angular.z: x=" << new_twist.angular.z << std::endl;
       // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);

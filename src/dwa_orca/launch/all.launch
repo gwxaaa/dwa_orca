@@ -1,0 +1,83 @@
+<launch>
+    <include file="src/dwa_orca/launch/pub.launch">
+      <arg name="node_name" value="pub_sub11" />
+      <arg name="target_model_name"  value="model2.6" />
+      <arg name="goal_pose_x"  value="-2.7" />
+      <arg name="goal_pose_y"  value="10" />
+      <arg name="goal_pose_z"  value="0.5" />
+      
+    </include>
+<!-- 
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub12" />
+     <arg name="target_model_name" value="model2.6" />
+     <arg name="goal_pose_x"  value="-8" />
+     <arg name="goal_pose_y"  value="7.3" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include> -->
+
+    <!-- <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub13" />
+     <arg name="target_model_name"  value="model2.7" />
+     <arg name="goal_pose_x"  value="-8" />
+     <arg name="goal_pose_y"  value="-0.75" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub14" />
+     <arg name="target_model_name"  value="model2.8" />
+     <arg name="goal_pose_x"  value="-6" />
+     <arg name="goal_pose_y"  value="-5.6" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub15" />
+     <arg name="target_model_name" value="model2.9" />
+     <arg name="goal_pose_x"  value="1.5" />
+     <arg name="goal_pose_y"  value="-8" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub16" />
+     <arg name="target_model_name"  value="model2.10" />
+     <arg name="goal_pose_x" type="double" value="7.9" />
+     <arg name="goal_pose_y" type="double" value="-9.0" />
+     <arg name="goal_pose_z" type="double" value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub17" />
+     <arg name="target_model_name" value="model2.1" /> 
+     <arg name="goal_pose_x"  value="9.5" />
+     <arg name="goal_pose_y"  value="-3" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub18" />
+     <arg name="target_model_name"  value="model2.2" />
+     <arg name="goal_pose_x"  value="9.5" />
+     <arg name="goal_pose_y"  value="3.0" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub19" />
+     <arg name="target_model_name" value="model2.4" />
+     <arg name="goal_pose_x"  value="7.5" />
+     <arg name="goal_pose_y"  value="9.5" />
+     <arg name="goal_pose_z"  value="0.5" />
+    </include>
+
+    <include file="src/dwa_orca/launch/pub.launch">
+     <arg name="node_name" value="pub_sub20" />
+     <arg name="target_model_name" value="model2.3" />
+     <arg name="goal_pose_x"  value="1.8" />
+     <arg name="goal_pose_y"  value="10.0" />
+     <arg name="goal_pose_z"  value="0.5" />   
+    </include> -->
+
+</launch>
