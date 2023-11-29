@@ -8,6 +8,8 @@
 #include "Obstacle.h"
 #include "Neighbor.h"
 #include <KinematicModel.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "nav_msgs/Path.h"
 namespace RVO
 {
 
@@ -57,6 +59,9 @@ namespace RVO
     double max_linear_speed;
     double max_angular_speed; // 用于存储新速度的数组
     std::vector<geometry_msgs::Pose> obstacle_poses;
+    ros::Publisher pose_stamped_pub_;
+    ros::Publisher path_pub_;
+    std::vector<geometry_msgs::Pose> new_poses;
   };
 } // namespace RVO
 #endif // MODEL_SUB_PUB_H

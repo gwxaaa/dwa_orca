@@ -8,6 +8,8 @@
 #include <cmath>
 #include <KinematicModel.h>
 #include "DWA.h"
+#include <geometry_msgs/PoseStamped.h>
+#include "nav_msgs/Path.h"
 namespace RVO
 {
   ModelSubPub::ModelSubPub(const std::string &modelName, double time, gazebo_msgs::ModelState target_model_state,
@@ -20,7 +22,7 @@ namespace RVO
         timeHorizon_(timeHorizon_),
         radius_(radius_),
         goal_pose(goal_pose),
-        //target_model_state(target_model_state),
+        // target_model_state(target_model_state),
         lastStoredNewVelocity(agentVelocity),
         num(num),
         max_linear_speed(max_linear_speed),
@@ -33,15 +35,15 @@ namespace RVO
     target_model_ = modelName;
     model_states_sub_ = nh.subscribe("/gazebo/model_states", 10, &ModelSubPub::modelStatesCallback, this);
     model_states_pub_ = nh.advertise<gazebo_msgs::ModelState>("/gazebo/set_model_state", 10);
-    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
-    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<goal_pose.position.x<< std::endl;
+    pose_stamped_pub_ = nh.advertise<geometry_msgs::PoseStamped>("/pose_stamped_topic", 10); // 新增的发布器
+    path_pub_ = nh.advertise<nav_msgs::Path>("/path_topic", 10);                             // 新增的发布器
   }
   // 回调函数，处理模型状态信息
   void ModelSubPub::modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg)
   {
-        std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
+    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" << target_model_state.twist.linear.x << std::endl;
     other_models_states.clear();
-     //gazebo_msgs::ModelState target_model_state;
+    // gazebo_msgs::ModelState target_model_state;
     // 遍历所有模型
     for (size_t i = 0; i < msg->name.size(); ++i)
     {
@@ -50,7 +52,6 @@ namespace RVO
         target_model_state.model_name = msg->name[i];
         target_model_state.pose = msg->pose[i];
         target_model_state.twist = msg->twist[i];
-
       }
       else if (msg->name[i] != "ground_plane")
       {
@@ -65,7 +66,7 @@ namespace RVO
     std::string agentname = target_model_;
     agentpose = target_model_state.pose;
     agenttwist = target_model_state.twist;
-    std::cout << "912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
+    std::cout << "912342222132222222222222Moved to new_twist.linear.x=" << target_model_state.twist.linear.x << std::endl;
     // 格式转化
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
@@ -110,13 +111,13 @@ namespace RVO
       if (newVelocity != lastStoredNewVelocity)
       {
         newVelocities.push_back(newVelocity); // 将上一次存储的速度放入容器
-        lastStoredNewVelocity = newVelocity;//初始信息设置为0，也就是初始的位置不论朝向怎么样，都根据相关的速度计算得到角速度。
+        lastStoredNewVelocity = newVelocity;  // 初始信息设置为0，也就是初始的位置不论朝向怎么样，都根据相关的速度计算得到角速度。
         // 速度改变，将旧的值给last
         lastvelocity = newVelocities[newVelocities.size() - 2];
         // 更新存储的新速度为当前计算得到的新速度
       }
       double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
-     // std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
+      // std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
       // 先将相关的速度格式转换    std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
       double X = newVelocity.x();
       double Y = newVelocity.y();
@@ -124,7 +125,7 @@ namespace RVO
       double theta = atan2(Y, X);
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
-      new_twist.angular.z = (theta -  0) / time;
+      new_twist.angular.z = (theta - 0) / time;
       // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);
@@ -138,9 +139,45 @@ namespace RVO
     model_state.model_name = agentname;
     model_state.pose = final_pose;
     model_states_pub_.publish(model_state);
+
+    new_poses.push_back(new_pose);
+    std::size_t size = new_poses.size();
+    std::cout << "a111size:" << size << std::endl;
+
+    // 发布pose信息
+    geometry_msgs::PoseStamped pose_stamped_msg;
+    pose_stamped_msg.header.stamp = ros::Time::now(); // 使用当前时间作为时间戳
+    pose_stamped_msg.header.frame_id = "map";
+    pose_stamped_msg.pose.position.x = new_pose.position.x;
+    pose_stamped_msg.pose.position.y = new_pose.position.y;
+    pose_stamped_msg.pose.orientation = new_pose.orientation;
+    // 发布 geometry_msgs::PoseStamped 类型的消息
+    pose_stamped_pub_.publish(pose_stamped_msg);
+
+    // 发布path信息
+    nav_msgs::Path path_msg;
+    path_msg.header.stamp = ros::Time::now();
+    path_msg.header.frame_id = "map"; // 设置路径消息的坐标系
+    // 需要设置较多的信息
+    for (int i = 0; i < new_poses.size(); ++i)
+    {
+      // 添加路径点到路径消息中
+      geometry_msgs::PoseStamped pose;
+      pose.header.stamp = ros::Time::now();
+      pose.header.frame_id = "map"; // 设置路径点的坐标系
+      pose.pose = new_poses[i];
+
+      // 信息传输成功，但是值不是有效值；那么应该怎么设置
+      // std::cout << "11111Moved to new position: x=" << new_poses[i].position.x << ", y=" << new_poses[i].position.y << std::endl;
+      // pose.pose.id=modelName_;
+
+      path_msg.poses.push_back(pose); // 将路径点添加到路径消息中
+    }
+    path_pub_.publish(path_msg); // 发布路径消息
   }
-  std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const
-  {
-    return other_models_states;
-  };
+
+std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const
+{
+  return other_models_states;
+};
 }
