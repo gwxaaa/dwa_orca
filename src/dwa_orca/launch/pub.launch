@@ -5,20 +5,20 @@
     <arg name="goal_pose_y"  />
     <arg name="goal_pose_z"   />
     <node name = "$(arg node_name)" pkg = "dwa_orca" type = "pub_sub" output = "screen">
-    <param name="target_model_name" type="string" value="$(arg target_model_name)" />
-    <param name="target_model/twist_linear_x" type="double" value="1.0" />
-    <param name="target_model/twist_angular_z" type="double" value="1.0" />
-    <param name="neighbor_distance" type="double" value="2.0" />
-    <param name="time_horizon" type="double" value="2.0" />
-    <param name="radius_" type="double" value="0.6" />  
-    <param name="goal_pose_x" type="double" value="$(arg goal_pose_x)" />
-    <param name="goal_pose_y" type="double" value="$(arg goal_pose_y)" />
-    <param name="goal_pose_z" type="double" value="$(arg goal_pose_z)" />
-    <param name="num" type="double" value="10" />
-    <param name="time" type="double" value="0.15" />
-    <param name="max_speed" type="double" value="3.0" />
-    <param name="max_angular_speed" type="double" value="3" />
-    <param name="max_linear_speed" type="double" value="3" />
-  </node>
+     <param name="target_model_name" type="string" value="$(arg target_model_name)" />
+     <param name="target_model/twist_linear_x" type="double" value="0.5" />
+     <param name="target_model/twist_angular_z" type="double" value="1.0" />
+     <param name="neighbor_distance" type="double" value="2.0" />
+     <param name="time_horizon" type="double" value="2.0" />
+     <param name="radius_" type="double" value="0.6" />  
+     <param name="goal_pose_x" type="double" value="$(arg goal_pose_x)" />
+     <param name="goal_pose_y" type="double" value="$(arg goal_pose_y)" />
+     <param name="goal_pose_z" type="double" value="$(arg goal_pose_z)" />
+     <param name="num" type="double" value="10" />
+     <param name="time" type="double" value="0.15" />
+     <param name="max_speed" type="double" value="7.0" />
+     <param name="max_angular_speed" type="double" value="3" />
+     <param name="max_linear_speed" type="double" value="3" />
+    </node>
 
 </launch>

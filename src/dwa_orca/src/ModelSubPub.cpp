@@ -20,7 +20,7 @@ namespace RVO
         timeHorizon_(timeHorizon_),
         radius_(radius_),
         goal_pose(goal_pose),
-        target_model_state(target_model_state),
+        //target_model_state(target_model_state),
         lastStoredNewVelocity(agentVelocity),
         num(num),
         max_linear_speed(max_linear_speed),
@@ -33,21 +33,24 @@ namespace RVO
     target_model_ = modelName;
     model_states_sub_ = nh.subscribe("/gazebo/model_states", 10, &ModelSubPub::modelStatesCallback, this);
     model_states_pub_ = nh.advertise<gazebo_msgs::ModelState>("/gazebo/set_model_state", 10);
+    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
+    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<goal_pose.position.x<< std::endl;
   }
   // 回调函数，处理模型状态信息
   void ModelSubPub::modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg)
   {
+        std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
     other_models_states.clear();
-    // gazebo_msgs::ModelState target_model_state;
+     //gazebo_msgs::ModelState target_model_state;
     // 遍历所有模型
     for (size_t i = 0; i < msg->name.size(); ++i)
     {
       if (msg->name[i] == target_model_)
       {
-        // 存储特定目标模型的信
         target_model_state.model_name = msg->name[i];
         target_model_state.pose = msg->pose[i];
         target_model_state.twist = msg->twist[i];
+
       }
       else if (msg->name[i] != "ground_plane")
       {
@@ -62,7 +65,7 @@ namespace RVO
     std::string agentname = target_model_;
     agentpose = target_model_state.pose;
     agenttwist = target_model_state.twist;
-     std::cout << "912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
+    std::cout << "912342222132222222222222Moved to new_twist.linear.x=" <<target_model_state.twist.linear.x<< std::endl;
     // 格式转化
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
@@ -96,7 +99,6 @@ namespace RVO
     RVO::Agent agent(agentPosition, agentVelocity, prefVelocity, time, maxSpeed_, neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, prefVelocity, agentNeighbors_, obstacleNeighbors_, time);
     geometry_msgs::Pose final_pose;
-
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
       final_pose.position.x = agentPosition.x();
@@ -105,7 +107,6 @@ namespace RVO
     }
     else
     {
-
       if (newVelocity != lastStoredNewVelocity)
       {
         newVelocities.push_back(newVelocity); // 将上一次存储的速度放入容器

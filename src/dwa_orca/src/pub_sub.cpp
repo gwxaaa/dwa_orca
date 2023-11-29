@@ -13,8 +13,8 @@ int main(int argc, char **argv)
     std::string targetModelName;
     nh.getParam("target_model_name", targetModelName);
     double twist_linear_x, twist_angular_z, maxSpeed_, neighborDistance_, timeHorizon_, radius_, time,num,max_angular_speed,  max_linear_speed;
-    nh.param("target_model/twist_linear_x", twist_linear_x,1.0);
-    nh.param("target_model/twist_angular_z", twist_angular_z,1.0);
+    nh.getParam("target_model/twist_linear_x", twist_linear_x);
+    nh.getParam("target_model/twist_angular_z", twist_angular_z);
     nh.getParam("max_speed", maxSpeed_);
     nh.getParam("neighbor_distance", neighborDistance_);
     nh.getParam("time_horizon", timeHorizon_);
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     target_model_state.twist.angular.z = twist_angular_z;
     RVO::ModelSubPub modelSubPub(targetModelName, time, target_model_state, goal_pose,
                                  maxSpeed_, neighborDistance_, timeHorizon_, radius_,num,max_angular_speed,  max_linear_speed);
-    ros::Rate rate(9);
+    ros::Rate rate(10);
     while (ros::ok())
     {
         ROS_INFO("Target model name: %s", targetModelName.c_str());
