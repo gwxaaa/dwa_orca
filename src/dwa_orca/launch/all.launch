@@ -15,7 +15,7 @@
      <arg name="goal_pose_z"  value="0.5" />
     </include>
 
-    <include file="src/dwa_orca/launch/pub.launch">
+    <!-- <include file="src/dwa_orca/launch/pub.launch">
      <arg name="node_name" value="pub_sub23" />
      <arg name="target_model_name"  value="model2.7" />
      <arg name="goal_pose_x"  value="-8" />
@@ -77,6 +77,6 @@
      <arg name="goal_pose_x"  value="1.8" />
      <arg name="goal_pose_y"  value="10.0" />
      <arg name="goal_pose_z"  value="0.5" />   
-    </include>
+    </include> -->
 
 </launch>
