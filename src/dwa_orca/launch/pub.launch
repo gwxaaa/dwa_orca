@@ -4,6 +4,8 @@
     <arg name="goal_pose_x"   />
     <arg name="goal_pose_y"  />
     <arg name="goal_pose_z"   />
+    <arg name="/path_topic"   />
+    <arg name="/pose_stamped_topic"   />
     <node name = "$(arg node_name)" pkg = "dwa_orca" type = "pub_sub" output = "screen">
      <param name="target_model_name" type="string" value="$(arg target_model_name)" />
      <param name="target_model/twist_linear_x" type="double" value="0.5" />
@@ -19,6 +21,8 @@
      <param name="max_speed" type="double" value="7.0" />
      <param name="max_angular_speed" type="double" value="3" />
      <param name="max_linear_speed" type="double" value="3" />
+     <remap from="/pose_stamped_topic" to="$(arg /pose_stamped_topic)" />
+     <remap from="/path_topic" to="$(arg /path_topic)" />
     </node>
 
 </launch>

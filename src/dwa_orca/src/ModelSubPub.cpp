@@ -41,7 +41,6 @@ namespace RVO
   // 回调函数，处理模型状态信息
   void ModelSubPub::modelStatesCallback(const gazebo_msgs::ModelStates::ConstPtr &msg)
   {
-    std::cout << "8912342222132222222222222Moved to new_twist.linear.x=" << target_model_state.twist.linear.x << std::endl;
     other_models_states.clear();
     // gazebo_msgs::ModelState target_model_state;
     // 遍历所有模型
@@ -66,7 +65,6 @@ namespace RVO
     std::string agentname = target_model_;
     agentpose = target_model_state.pose;
     agenttwist = target_model_state.twist;
-    std::cout << "912342222132222222222222Moved to new_twist.linear.x=" << target_model_state.twist.linear.x << std::endl;
     // 格式转化
     Vector2 agentPosition(agentpose.position.x, agentpose.position.y);
     double deltaTheta = agenttwist.angular.z * time;
@@ -166,11 +164,7 @@ namespace RVO
       pose.header.stamp = ros::Time::now();
       pose.header.frame_id = "map"; // 设置路径点的坐标系
       pose.pose = new_poses[i];
-
-      // 信息传输成功，但是值不是有效值；那么应该怎么设置
-      // std::cout << "11111Moved to new position: x=" << new_poses[i].position.x << ", y=" << new_poses[i].position.y << std::endl;
       // pose.pose.id=modelName_;
-
       path_msg.poses.push_back(pose); // 将路径点添加到路径消息中
     }
     path_pub_.publish(path_msg); // 发布路径消息
