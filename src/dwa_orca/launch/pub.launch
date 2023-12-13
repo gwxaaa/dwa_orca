@@ -12,15 +12,15 @@
      <param name="target_model/twist_angular_z" type="double" value="1.0" />
      <param name="neighbor_distance" type="double" value="2.0" />
      <param name="time_horizon" type="double" value="2.0" />
-     <param name="radius_" type="double" value="0.6" />  
+     <param name="radius_" type="double" value="2" />  
      <param name="goal_pose_x" type="double" value="$(arg goal_pose_x)" />
      <param name="goal_pose_y" type="double" value="$(arg goal_pose_y)" />
      <param name="goal_pose_z" type="double" value="$(arg goal_pose_z)" />
-     <param name="num" type="double" value="10" />
-     <param name="time" type="double" value="0.15" />
-     <param name="max_speed" type="double" value="7.0" />
-     <param name="max_angular_speed" type="double" value="3" />
-     <param name="max_linear_speed" type="double" value="3" />
+     <param name="num" type="double" value="18" />
+     <param name="time" type="double" value="0.1" />
+     <param name="max_speed" type="double" value="10.0" />
+     <param name="max_angular_speed" type="double" value="7" />
+     <param name="max_linear_speed" type="double" value="7" />
      <remap from="/pose_stamped_topic" to="$(arg /pose_stamped_topic)" />
      <remap from="/path_topic" to="$(arg /path_topic)" />
     </node>

@@ -115,8 +115,6 @@ namespace RVO
         // 更新存储的新速度为当前计算得到的新速度
       }
       double initialtheta2 = atan2(lastvelocity.y(), lastvelocity.x());
-      // std::cout << "32222222222222Moved to  initialtheta2: x=" << initialtheta2 << std::endl;
-      // 先将相关的速度格式转换    std::cout << "433333Moved to new newVelocity x=" << newVelocity.x() << ", y=" << newVelocity.y() << std::endl;
       double X = newVelocity.x();
       double Y = newVelocity.y();
       new_twist.linear.x = sqrt(X * X + Y * Y);
@@ -137,6 +135,7 @@ namespace RVO
     model_state.model_name = agentname;
     model_state.pose = final_pose;
     model_states_pub_.publish(model_state);
+    new_pose=final_pose;
 
     new_poses.push_back(new_pose);
     std::size_t size = new_poses.size();
@@ -164,14 +163,13 @@ namespace RVO
       pose.header.stamp = ros::Time::now();
       pose.header.frame_id = "map"; // 设置路径点的坐标系
       pose.pose = new_poses[i];
-      // pose.pose.id=modelName_;
       path_msg.poses.push_back(pose); // 将路径点添加到路径消息中
     }
     path_pub_.publish(path_msg); // 发布路径消息
   }
 
-std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const
-{
-  return other_models_states;
-};
+  std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const
+  {
+    return other_models_states;
+  };
 }

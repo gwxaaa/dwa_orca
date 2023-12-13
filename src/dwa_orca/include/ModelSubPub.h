@@ -42,7 +42,6 @@ namespace RVO
     double maxSpeed_;
     double neighborDistance_;
     double timeHorizon_;
-
     std::vector<Agent *> agentNeighbors_;
     std::vector<Agent *> obstacleNeighbors_;
     gazebo_msgs::ModelState target_model_state;
