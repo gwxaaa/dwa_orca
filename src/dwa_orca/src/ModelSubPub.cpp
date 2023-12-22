@@ -23,10 +23,10 @@ namespace RVO
         radius_(radius_),
         goal_pose(goal_pose),
         // target_model_state(target_model_state),
-        lastStoredNewVelocity(agentVelocity),
         num(num),
         max_linear_speed(max_linear_speed),
         max_angular_speed(max_angular_speed),
+        lastStoredNewVelocity(agentVelocity),
         newVelocities(1, Vector2(0, 0))
 
   {
@@ -98,6 +98,7 @@ namespace RVO
     RVO::Agent agent(agentPosition, agentVelocity, prefVelocity, time, maxSpeed_, neighborDistance_, timeHorizon_, other_models_states, radius_);
     Vector2 newVelocity = agent.computeNewVelocity(agentPosition, agentVelocity, prefVelocity, agentNeighbors_, obstacleNeighbors_, time);
     geometry_msgs::Pose final_pose;
+
     if (std::isnan(newVelocity.x()) || std::isnan(newVelocity.y()))
     {
       final_pose.position.x = agentPosition.x();
@@ -121,7 +122,13 @@ namespace RVO
       double theta = atan2(Y, X);
       new_twist.angular.x = 0;
       new_twist.angular.y = 0;
-      new_twist.angular.z = (theta - 0) / time;
+      // new_twist.angular.z = (theta - initialtheta2) / time;
+      double angle_diff = theta - initialtheta2;
+      std::cout << "gle_diff.z :" << angle_diff << std::endl;
+      // // 这里要保证角速度的大小方向，让其值范围在-M_PI---M_PI；
+      angle_diff = std::remainder(angle_diff, 2.0 * M_PI);
+      std::cout << "angle_diff.z :" << angle_diff << std::endl;
+      new_twist.angular.z = angle_diff / time;
       // 引入运动学模型，现在是有了速度角速度，pose是传进来的初始信息，但速度角速度应该是新的计算结果
       KinematicModel kinematic_model(agentpose, new_twist);
       final_pose = kinematic_model.calculateNewPosition(time);
@@ -135,12 +142,10 @@ namespace RVO
     model_state.model_name = agentname;
     model_state.pose = final_pose;
     model_states_pub_.publish(model_state);
-    new_pose=final_pose;
-
+    new_pose = final_pose;
     new_poses.push_back(new_pose);
     std::size_t size = new_poses.size();
     std::cout << "a111size:" << size << std::endl;
-
     // 发布pose信息
     geometry_msgs::PoseStamped pose_stamped_msg;
     pose_stamped_msg.header.stamp = ros::Time::now(); // 使用当前时间作为时间戳
@@ -150,7 +155,6 @@ namespace RVO
     pose_stamped_msg.pose.orientation = new_pose.orientation;
     // 发布 geometry_msgs::PoseStamped 类型的消息
     pose_stamped_pub_.publish(pose_stamped_msg);
-
     // 发布path信息
     nav_msgs::Path path_msg;
     path_msg.header.stamp = ros::Time::now();
@@ -167,7 +171,6 @@ namespace RVO
     }
     path_pub_.publish(path_msg); // 发布路径消息
   }
-
   std::vector<gazebo_msgs::ModelState> ModelSubPub::getothermodels() const
   {
     return other_models_states;

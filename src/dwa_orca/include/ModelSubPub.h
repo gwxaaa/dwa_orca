@@ -51,8 +51,8 @@ namespace RVO
     geometry_msgs::Pose new_pose;
     geometry_msgs::Twist new_twist;
     geometry_msgs::Pose final_pose;
-    Vector2 lastvelocity;
     Vector2 prevelocity;
+    Vector2 lastvelocity;
     Vector2 lastStoredNewVelocity;
     std::vector<Vector2> newVelocities;
     double max_linear_speed;
